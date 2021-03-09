@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { Form, Button } from "react-bootstrap";
 
 const UserForm = ({data}) => {
@@ -10,9 +11,14 @@ const UserForm = ({data}) => {
   const [ returnVisits, setReturnVisits ] = useState(0);
   const [ studies, setStudies ] = useState(0);
   const [ comments, setCommentes ] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios.post(`${process.env.REACT_APP_CONNECTION_URL}`, {name, month, placements, hours, returnVisits, studies, comments})
+  }
   
   return (
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group controlId="exampleForm.ControlInput1">
           <Form.Label>Nombre</Form.Label>
           <Form.Control type="text" value={name} onChange={e => setName(e.target.value)}/>
@@ -47,6 +53,9 @@ const UserForm = ({data}) => {
           <Form.Label>Comentarios:</Form.Label>
           <Form.Control as="textarea" rows={3} value={comments} onChange={e => setCommentes(e.target.value)} />
         </Form.Group>
+        <Button variant="primary" type="submit" >
+          Submit
+        </Button>
       </Form>
   );
 };
